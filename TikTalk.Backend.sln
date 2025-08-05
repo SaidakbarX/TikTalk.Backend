@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CA7C315B-0D81-4985-A22C-FD776052B33E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTalk.Backend.Api", "src\TikTalk.Backend.Api\TikTalk.Backend.Api.csproj", "{687A8713-A943-49DE-966D-10EEB011F8B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTalk.Backend.Domain", "src\TikTalk.Backend.Domain\TikTalk.Backend.Domain.csproj", "{2C9987C9-CC4A-4619-9AB5-522B223A4353}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTalk.Backend.Core", "src\TikTalk.Backend.Core\TikTalk.Backend.Core.csproj", "{62DD3EC0-0024-42B0-B9E7-7EEBB2B6D74A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTalk.Backend.Application", "src\TikTalk.Backend.Application\TikTalk.Backend.Application.csproj", "{226E0A08-7585-412C-9947-E2C0C0C007F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTalk.Backend.Infrastructure", "src\TikTalk.Backend.Infrastructure\TikTalk.Backend.Infrastructure.csproj", "{7C7FEAE2-DB5C-47B3-96C6-6BD030F4DBEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{687A8713-A943-49DE-966D-10EEB011F8B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{687A8713-A943-49DE-966D-10EEB011F8B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{687A8713-A943-49DE-966D-10EEB011F8B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{687A8713-A943-49DE-966D-10EEB011F8B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C9987C9-CC4A-4619-9AB5-522B223A4353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C9987C9-CC4A-4619-9AB5-522B223A4353}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C9987C9-CC4A-4619-9AB5-522B223A4353}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C9987C9-CC4A-4619-9AB5-522B223A4353}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62DD3EC0-0024-42B0-B9E7-7EEBB2B6D74A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62DD3EC0-0024-42B0-B9E7-7EEBB2B6D74A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62DD3EC0-0024-42B0-B9E7-7EEBB2B6D74A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62DD3EC0-0024-42B0-B9E7-7EEBB2B6D74A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226E0A08-7585-412C-9947-E2C0C0C007F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{226E0A08-7585-412C-9947-E2C0C0C007F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{226E0A08-7585-412C-9947-E2C0C0C007F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{226E0A08-7585-412C-9947-E2C0C0C007F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C7FEAE2-DB5C-47B3-96C6-6BD030F4DBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C7FEAE2-DB5C-47B3-96C6-6BD030F4DBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C7FEAE2-DB5C-47B3-96C6-6BD030F4DBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C7FEAE2-DB5C-47B3-96C6-6BD030F4DBEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{687A8713-A943-49DE-966D-10EEB011F8B9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2C9987C9-CC4A-4619-9AB5-522B223A4353} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{62DD3EC0-0024-42B0-B9E7-7EEBB2B6D74A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{226E0A08-7585-412C-9947-E2C0C0C007F7} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7C7FEAE2-DB5C-47B3-96C6-6BD030F4DBEC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BA04357-4BF8-4FE5-B091-AC79DAEBD0E0}
+	EndGlobalSection
+EndGlobal
