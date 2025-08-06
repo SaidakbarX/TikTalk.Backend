@@ -1,0 +1,106 @@
+<div class="video-feed" *ngIf="!loading">
+  <div class="video-container" #videoContainer *ngIf="getCurrentVideo() as video">
+    
+    <!-- Video Background (placeholder since we don't have actual videos) -->
+    <div class="video-placeholder" 
+         [style.background]="'linear-gradient(45deg, #fe2c55, #25f4ee, #ff6b35)'">
+      <div class="video-content">
+        <mat-icon style="font-size: 80px; color: white; opacity: 0.8;">play_circle_outline</mat-icon>
+        <h3 style="color: white; text-align: center; margin-top: 20px;">{{ video.title }}</h3>
+      </div>
+    </div>
+
+    <!-- Video Info Overlay -->
+    <div class="video-overlay">
+      <div class="video-info">
+        <div class="user-info">
+          <img [src]="video.user.profilePicture || '/assets/default-avatar.png'" 
+               [alt]="video.user.fullName"
+               class="user-avatar">
+          <div class="user-details">
+            <h4>@{{ video.user.username }}</h4>
+            <p>{{ video.description }}</p>
+            <div class="hashtags">
+              <span *ngFor="let hashtag of video.hashtags" class="hashtag">#{{ hashtag }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="video-stats">
+          <span class="stat-item">
+            <mat-icon>visibility</mat-icon>
+            {{ formatCount(video.viewsCount) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <!-- User Avatar with Follow Button -->
+      <div class="action-item">
+        <img [src]="video.user.profilePicture || '/assets/default-avatar.png'" 
+             [alt]="video.user.fullName"
+             class="action-avatar">
+        <button class="follow-btn" *ngIf="!video.user.isFollowing">+</button>
+      </div>
+
+      <!-- Like Button -->
+      <div class="action-item">
+        <button class="action-btn" [class.liked]="video.isLiked" (click)="onLike(video)">
+          <mat-icon>{{ video.isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+        <span class="action-count">{{ formatCount(video.likesCount) }}</span>
+      </div>
+
+      <!-- Comment Button -->
+      <div class="action-item">
+        <button class="action-btn" (click)="toggleComments()">
+          <mat-icon>chat_bubble_outline</mat-icon>
+        </button>
+        <span class="action-count">{{ formatCount(video.commentsCount) }}</span>
+      </div>
+
+      <!-- Share Button -->
+      <div class="action-item">
+        <button class="action-btn" (click)="onShare(video)">
+          <mat-icon>share</mat-icon>
+        </button>
+        <span class="action-count">{{ formatCount(video.sharesCount) }}</span>
+      </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="video-controls">
+      <button class="nav-btn prev" (click)="previousVideo()" 
+              [disabled]="currentVideoIndex === 0">
+        <mat-icon>keyboard_arrow_up</mat-icon>
+      </button>
+      <button class="nav-btn next" (click)="nextVideo()" 
+              [disabled]="currentVideoIndex === videos.length - 1">
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Comments Section -->
+  <app-comment-section 
+    *ngIf="showComments && getCurrentVideo()" 
+    [videoId]="getCurrentVideo()!.id"
+    [isVisible]="showComments"
+    (close)="toggleComments()">
+  </app-comment-section>
+</div>
+
+<!-- Loading State -->
+<div class="loading" *ngIf="loading">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Loading amazing videos...</p>
+</div>
+
+<!-- Empty State -->
+<div class="empty-state" *ngIf="!loading && videos.length === 0">
+  <mat-icon style="font-size: 64px; color: #666;">video_library</mat-icon>
+  <h3>No videos available</h3>
+  <p>Check back later for new content!</p>
+</div>
