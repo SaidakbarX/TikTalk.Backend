@@ -17,6 +17,7 @@ export class VideoFeedComponent implements OnInit {
   loading = false;
   currentUser: User | null = null;
   showComments = false;
+  isPlaying = true;
 
   // Demo data for showcase
   demoVideos: Video[] = [
@@ -40,7 +41,7 @@ export class VideoFeedComponent implements OnInit {
         username: 'dancer_queen',
         email: 'dancer@example.com',
         fullName: 'Sarah Johnson',
-        profilePicture: '/assets/avatar1.jpg',
+        profilePicture: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop',
         bio: 'Professional dancer 💃',
         followersCount: 45000,
         followingCount: 123,
@@ -69,7 +70,7 @@ export class VideoFeedComponent implements OnInit {
         username: 'chef_master',
         email: 'chef@example.com',
         fullName: 'Mike Chen',
-        profilePicture: '/assets/avatar2.jpg',
+        profilePicture: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop',
         bio: 'Food enthusiast 👨‍🍳',
         followersCount: 78000,
         followingCount: 234,
@@ -99,7 +100,24 @@ export class VideoFeedComponent implements OnInit {
     this.loading = true;
     this.videoService.getTrendingVideos().subscribe({
       next: (videos) => {
-        this.videos = videos;
+        // Map backend video format to frontend format
+        this.videos = videos.map(video => ({
+          ...video,
+          sharesCount: 0, // Backend doesn't have shares yet
+          isLiked: false, // Will be determined by backend
+          hashtags: [], // Will be populated from backend
+          user: {
+            ...video.user,
+            profilePicture: video.user.avatarUrl || 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop',
+            username: video.user.username || video.user.fullName,
+            bio: '',
+            followersCount: 0,
+            followingCount: 0,
+            videosCount: 0,
+            isFollowing: false,
+            createdAt: new Date()
+          }
+        }));
         this.loading = false;
       },
       error: (error) => {
@@ -118,13 +136,19 @@ export class VideoFeedComponent implements OnInit {
   nextVideo() {
     if (this.currentVideoIndex < this.videos.length - 1) {
       this.currentVideoIndex++;
+      this.isPlaying = true;
     }
   }
 
   previousVideo() {
     if (this.currentVideoIndex > 0) {
       this.currentVideoIndex--;
+      this.isPlaying = true;
     }
+  }
+
+  togglePlayPause() {
+    this.isPlaying = !this.isPlaying;
   }
 
   onLike(video: Video) {
@@ -151,12 +175,15 @@ export class VideoFeedComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: video.title,
-        text: video.description,
+        text: video.description || video.title,
         url: window.location.href
       });
     } else {
       // Fallback for browsers without Web Share API
-      navigator.clipboard.writeText(window.location.href);
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        // Could show a toast notification here
+        console.log('Link copied to clipboard');
+      });
     }
   }
 

@@ -7,7 +7,7 @@ import { User, LoginRequest, RegisterRequest, AuthResponse } from '../models/use
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'https://localhost:7000/api/auth'; // Your backend URL
+  private baseUrl = 'https://localhost:7017/api/auth'; // Updated backend URL
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -31,31 +31,60 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, credentials)
+    // Backend expects UserLoginDto format
+    const loginData = {
+      provider: 'email',
+      providerKey: credentials.email,
+      password: credentials.password,
+      loginTime: new Date()
+    };
+    
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, loginData)
       .pipe(
         tap(response => {
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('token', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
-          localStorage.setItem('user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
+          // Create user object from response
+          const user = {
+            id: '1', // Will be updated when backend returns user info
+            username: credentials.email.split('@')[0],
+            email: credentials.email,
+            fullName: credentials.email.split('@')[0],
+            profilePicture: '',
+            bio: '',
+            followersCount: 0,
+            followingCount: 0,
+            videosCount: 0,
+            createdAt: new Date()
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSubject.next(user);
         })
       );
   }
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/signup`, userData)
+    // Backend expects CreateUserDto format
+    const signupData = {
+      fullName: userData.fullName,
+      email: userData.email,
+      password: userData.password,
+      username: userData.username,
+      passwordHasher: '' // Will be handled by backend
+    };
+    
+    return this.http.post<any>(`${this.baseUrl}/signup`, signupData)
       .pipe(
         tap(response => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('refreshToken', response.refreshToken);
-          localStorage.setItem('user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
+          // After successful signup, login the user
+          this.login({ email: userData.email, password: userData.password }).subscribe();
         })
       );
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/logout`, {})
+    const refreshToken = localStorage.getItem('refreshToken');
+    return this.http.post(`${this.baseUrl}/logout`, { token: refreshToken })
       .pipe(
         tap(() => {
           localStorage.removeItem('token');
@@ -68,13 +97,16 @@ export class AuthService {
 
   refreshToken(): Observable<AuthResponse> {
     const refreshToken = localStorage.getItem('refreshToken');
-    return this.http.post<AuthResponse>(`${this.baseUrl}/refresh`, { refreshToken })
+    return this.http.post<AuthResponse>(`${this.baseUrl}/refresh`, { token: refreshToken })
       .pipe(
         tap(response => {
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('token', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
-          localStorage.setItem('user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
+          // Keep existing user data
+          const currentUser = this.getCurrentUser();
+          if (currentUser) {
+            this.currentUserSubject.next(currentUser);
+          }
         })
       );
   }

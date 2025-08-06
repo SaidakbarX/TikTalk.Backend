@@ -7,16 +7,13 @@ import { Video, VideoUploadRequest, Comment, VideoAnalytics } from '../models/vi
   providedIn: 'root'
 })
 export class VideoService {
-  private baseUrl = 'https://localhost:7000/api/videos';
+  private baseUrl = 'https://localhost:7017/api/videos';
 
   constructor(private http: HttpClient) {}
 
   getTrendingVideos(page: number = 1, limit: number = 10): Observable<Video[]> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('limit', limit.toString());
-    
-    return this.http.get<Video[]>(this.baseUrl, { params });
+    // Backend doesn't use pagination params in the current implementation
+    return this.http.get<Video[]>(this.baseUrl);
   }
 
   getVideoById(id: string): Observable<Video> {
@@ -27,10 +24,26 @@ export class VideoService {
     const formData = new FormData();
     formData.append('title', videoData.title);
     formData.append('description', videoData.description);
-    formData.append('hashtags', videoData.hashtags.join(','));
-    formData.append('video', videoData.videoFile);
+    formData.append('file', videoData.videoFile);
+    // Add thumbnail if available
+    if (videoData.videoFile) {
+      // Create a simple thumbnail placeholder
+      const canvas = document.createElement('canvas');
+      canvas.width = 200;
+      canvas.height = 200;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = '#fe2c55';
+        ctx.fillRect(0, 0, 200, 200);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            formData.append('thumbnail', blob, 'thumbnail.png');
+          }
+        });
+      }
+    }
 
-    return this.http.post<Video>(this.baseUrl, formData);
+    return this.http.post<Video>(`${this.baseUrl}/upload`, formData);
   }
 
   likeVideo(videoId: string): Observable<any> {

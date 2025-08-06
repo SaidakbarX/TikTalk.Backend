@@ -3,10 +3,11 @@
     
     <!-- Video Background (placeholder since we don't have actual videos) -->
     <div class="video-placeholder" 
-         [style.background]="'linear-gradient(45deg, #fe2c55, #25f4ee, #ff6b35)'">
+         [style.background]="'linear-gradient(45deg, #fe2c55, #25f4ee, #ff6b35)'"
+         (click)="togglePlayPause()">
       <div class="video-content">
-        <mat-icon style="font-size: 80px; color: white; opacity: 0.8;">play_circle_outline</mat-icon>
-        <h3 style="color: white; text-align: center; margin-top: 20px;">{{ video.title }}</h3>
+        <mat-icon>{{ isPlaying ? 'pause_circle_outline' : 'play_circle_outline' }}</mat-icon>
+        <h3>{{ video.title }}</h3>
       </div>
     </div>
 
@@ -14,7 +15,7 @@
     <div class="video-overlay">
       <div class="video-info">
         <div class="user-info">
-          <img [src]="video.user.profilePicture || '/assets/default-avatar.png'" 
+          <img [src]="video.user.profilePicture || 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop'" 
                [alt]="video.user.fullName"
                class="user-avatar">
           <div class="user-details">
@@ -39,7 +40,7 @@
     <div class="action-buttons">
       <!-- User Avatar with Follow Button -->
       <div class="action-item">
-        <img [src]="video.user.profilePicture || '/assets/default-avatar.png'" 
+        <img [src]="video.user.profilePicture || 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop'" 
              [alt]="video.user.fullName"
              class="action-avatar">
         <button class="follow-btn" *ngIf="!video.user.isFollowing">+</button>
@@ -66,7 +67,7 @@
         <button class="action-btn" (click)="onShare(video)">
           <mat-icon>share</mat-icon>
         </button>
-        <span class="action-count">{{ formatCount(video.sharesCount) }}</span>
+        <span class="action-count">{{ formatCount(video.sharesCount || 0) }}</span>
       </div>
     </div>
 
@@ -95,12 +96,12 @@
 <!-- Loading State -->
 <div class="loading" *ngIf="loading">
   <mat-spinner diameter="50"></mat-spinner>
-  <p>Loading amazing videos...</p>
+  <p>Loading videos...</p>
 </div>
 
 <!-- Empty State -->
 <div class="empty-state" *ngIf="!loading && videos.length === 0">
   <mat-icon style="font-size: 64px; color: #666;">video_library</mat-icon>
   <h3>No videos available</h3>
-  <p>Check back later for new content!</p>
+  <p>Upload your first video to get started!</p>
 </div>

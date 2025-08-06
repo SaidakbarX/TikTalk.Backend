@@ -22,7 +22,7 @@
   
   <a class="nav-item" [class.active]="isActive('/profile')" (click)="navigateToProfile()">
     <img *ngIf="currentUser?.profilePicture; else defaultAvatar" 
-         [src]="currentUser.profilePicture" 
+         [src]="currentUser.profilePicture || 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop'" 
          [alt]="currentUser.fullName"
          class="profile-avatar">
     <ng-template #defaultAvatar>
@@ -30,4 +30,25 @@
     </ng-template>
     <span>Profile</span>
   </a>
+  
+  <!-- Desktop only logout button -->
+  <a class="nav-item logout-item" (click)="logout()" style="display: none;">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </a>
 </nav>
+
+<style>
+@media (min-width: 768px) {
+  .logout-item {
+    display: flex !important;
+    margin-top: auto;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .logout-item:hover {
+    color: #fe2c55;
+  }
+}
+</style>

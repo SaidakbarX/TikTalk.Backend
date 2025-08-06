@@ -7,26 +7,26 @@ import { User } from '../../models/user.model';
   template: `
     <div class="profile-container" *ngIf="currentUser">
       <div class="profile-header">
-        <img [src]="currentUser.profilePicture || '/assets/default-avatar.png'" 
+        <img [src]="currentUser.profilePicture || 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop'" 
              [alt]="currentUser.fullName"
              class="profile-avatar">
         <h2>{{ currentUser.fullName }}</h2>
-        <p>@{{ currentUser.username }}</p>
+        <p>@{{ currentUser.username || currentUser.email.split('@')[0] }}</p>
         <div class="profile-stats">
           <div class="stat-item">
-            <div class="stat-number">{{ currentUser.followingCount }}</div>
+            <div class="stat-number">{{ currentUser.followingCount || 0 }}</div>
             <div class="stat-label">Following</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">{{ currentUser.followersCount }}</div>
+            <div class="stat-number">{{ currentUser.followersCount || 0 }}</div>
             <div class="stat-label">Followers</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">{{ currentUser.videosCount }}</div>
+            <div class="stat-number">{{ currentUser.videosCount || 0 }}</div>
             <div class="stat-label">Videos</div>
           </div>
         </div>
-        <button class="auth-btn" (click)="logout()">Logout</button>
+        <button class="auth-btn" (click)="logout()" style="margin-top: 20px;">Logout</button>
       </div>
     </div>
   `,

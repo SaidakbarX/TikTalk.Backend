@@ -25,25 +25,9 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          // Token expired, try to refresh
-          return this.authService.refreshToken().pipe(
-            switchMap(() => {
-              // Retry the original request with new token
-              const newToken = this.authService.getToken();
-              const retryReq = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${newToken}`
-                }
-              });
-              return next.handle(retryReq);
-            }),
-            catchError(() => {
-              // Refresh failed, redirect to login
-              this.authService.logout().subscribe();
-              this.router.navigate(['/auth']);
-              return throwError(() => error);
-            })
-          );
+          // For now, just redirect to login on 401
+          this.authService.logout().subscribe();
+          this.router.navigate(['/auth']);
         }
         return throwError(() => error);
       })
