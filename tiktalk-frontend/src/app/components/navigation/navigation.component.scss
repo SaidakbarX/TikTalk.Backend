@@ -1,0 +1,31 @@
+.upload-icon {
+  width: 45px;
+  height: 32px;
+  background: linear-gradient(45deg, #fe2c55, #25f4ee);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.upload-icon mat-icon {
+  color: white;
+  font-size: 20px;
+}
+
+.upload-btn {
+  transform: scale(1.1);
+}
+
+.profile-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-bottom: 2px;
+  border: 2px solid transparent;
+}
+
+.nav-item.active .profile-avatar {
+  border-color: #fe2c55;
+}
